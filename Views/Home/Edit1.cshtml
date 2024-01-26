@@ -1,0 +1,20 @@
+﻿@model WebApplication5.Models.Product
+
+<h2>Редактирование пользователя</h2>
+<form asp-action="edit" asp-controller="home" asp-route-id="@Model.Id">
+    <p>
+        <label asp-for="Name">Имя</label><br />
+        <input type="text" asp-for="Name" />
+    </p>
+    @*<p>
+        <label asp-for="Price">Цена</label><br />
+        <input type="number" asp-for="Price" />
+    </p>*@
+    <p>
+        <label asp-for="Url">Адрес</label><br />
+        <input type="number" asp-for="Url" />
+    </p>
+    <p>
+        <input type="submit" value="Сохранить" />
+    </p>
+</form>
