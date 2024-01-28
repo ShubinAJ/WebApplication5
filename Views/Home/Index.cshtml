@@ -26,7 +26,7 @@
         </p>
         <p>
             Адрес URL:<br />
-            <input id="productUrl" @*type="url"*@ />
+            <input id="productUrl" />
         </p>
         <p>
             <button id="saveBtn">Сохранить</button>
@@ -34,172 +34,13 @@
         </p>
     </div>
     <table>
-        <thead><tr>@*<th>ID</th>*@<th>Имя</th><th>URL адрес</th></tr></thead>
+        <thead><tr><th>Имя</th><th>URL адрес</th></tr></thead>
         <tbody>
         </tbody>
     </table>
 
-    
-    @*<script>
-        //синхронные вызовы
-        async function getProducts() {
-            // отправляет запрос и получаем ответ
-            const response = await fetch("/api/products", {
-                method: "GET",
-                headers: { "Accept": "application/json" }
-            });
-            // если запрос прошел нормально
-            if (response.ok === true) {
-                // получаем данные
-                const products = await response.json();
-                const rows = document.querySelector("tbody");
-                // добавляем полученные элементы в таблицу
-                products.value.forEach(product => rows.append(row(product)));
-            }
-        }
-
-        // Получение одного пользователя
-        async function getProduct(id) {
-            const response = await fetch(`/api/product/${id}`, {
-                method: "GET",
-                headers: { "Accept": "application/json" }
-            });
-            if (response.ok === true) {
-                const product = await response.json();
-                document.getElementById("productId").value = product.value.id;
-                document.getElementById("productName").value = product.value.name;
-                document.getElementById("productUrl").value = product.value.url;
-            }
-            else {
-                // если произошла ошибка, получаем сообщение об ошибке
-                const error = await response.json();
-                console.log(error.message); // и выводим его на консоль
-            }
-        }
-
-
-
-        // Добавление пользователя
-        function createProduct(productName, productUrl) {
-
-            const response = fetch("api/create", {
-                method: "POST",
-                headers: { "Accept": "application/json", "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    name: productName,
-                    url: productUrl
-                })
-            });
-            if (response.ok === true) {
-                const product = response.json();
-                document.querySelector("tbody").append(row(product));
-
-            }
-            else {
-                const error = response.json();
-                console.log(error.message);
-            }
-                    }
-        // Изменение пользователя
-        function editProduct(productId, productName, productUrl) {
-            const response = fetch("api/edit", {
-                method: "PUT",
-                headers: { "Accept": "application/json", "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    id: productId,
-                    name: productName,
-                    url: productUrl
-                })
-            });
-            if (response.ok === true) {
-                const product = response.json();
-                document.querySelector(`tr[data-rowid='${product.id}']`).replaceWith(row(product));
-            }
-            else {
-                const error = response.json();
-                console.log(error.message);
-            }
-        }
-        // Удаление пользователя
-        function deleteProduct(id) {
-            const response = fetch(`/api/delete/${id}`, {
-                method: "DELETE",
-                headers: { "Accept": "application/json" }
-            });
-            if (response.ok === true) {
-                const product = response.json();
-                document.querySelector(`tr[data-rowid='${product.id}']`).remove();
-            }
-            else {
-                const error = response.json();
-                console.log(error.message);
-            }
-
-        }
-
-        // сброс данных формы после отправки
-        function reset() {
-            document.getElementById("productId").value =
-                document.getElementById("productName").value =
-                document.getElementById("productUrl").value = "";
-        }
-        // создание строки для таблицы
-        function row(product) {
-            const tr = document.createElement("tr");
-            tr.setAttribute("data-rowid", product.id);
-            const nameTd = document.createElement("td");
-            nameTd.append(product.name);
-            tr.append(nameTd);
-            const urlTd = document.createElement("td");
-            urlTd.append(product.url);
-            tr.append(urlTd);
-            const linksTd = document.createElement("td");
-            const editLink = document.createElement("button");
-            editLink.append("Изменить");
-            editLink.addEventListener("click", async () => await getProduct(product.id));
-            linksTd.append(editLink);
-            const removeLink = document.createElement("button");
-            removeLink.append("Удалить");
-            removeLink.addEventListener("click", async () => await deleteProduct(product.id));
-            linksTd.append(removeLink);
-            tr.appendChild(linksTd);
-            return tr;
-        }
-
-        function redirect() {
-            /*document.location.href = 'https://localhost:7055/Index.html';*/
-            document.location.href = 'http://stackoverflow.com'
-        }
-
-        // сброс значений формы
-        document.getElementById("resetBtn").addEventListener("click", () => reset());
-
-        // отправка формы
-        document.getElementById("saveBtn").addEventListener("click", () => {
-
-            const id = document.getElementById("productId").value;
-            const name = document.getElementById("productName").value;
-            const url = document.getElementById("productUrl").value;
-            if (id === "") {
-                createProduct(name, url);
-                /*redirect();*/            
-            }
-            else
-            {
-                editProduct(id, name, url);
-                //redirect();               
-            }               
-            reset();
-            redirect();          
-        });
-        // загрузка пользователей
-        getProducts();
-    </script>*@
-
-
-
-    <script>
-        //асинхронные вызовы
+    <script>      
+       // Получение всех товаров
             async function getProducts() {
                 // отправляет запрос и получаем ответ
                 const response = await fetch("/api/products", {
@@ -215,8 +56,7 @@
                     products.value.forEach(product => rows.append(row(product)));
                 }
             }
-
-                    // Получение одного пользователя
+                    // Получение одного товара
             async function getProduct(id) {
                 const response = await fetch(`/api/product/${id}`, {
                     method: "GET",
@@ -231,49 +71,12 @@
                 else {
                     // если произошла ошибка, получаем сообщение об ошибке
                     const error = await response.json();
-                    console.log(error.message); // и выводим его на консоль
+                    console.log(error.message);
                 }
-            }
-
-
-
-            //// Получение всех пользователей
-            //async function getProducts() {
-            //    // отправляет запрос и получаем ответ
-            //    const response = await fetch("/home/products", {
-            //        method: "GET",
-            //        headers: { "Accept": "application/json" }
-            //    });
-            //    // если запрос прошел нормально
-            //    if (response.ok === true) {
-            //        // получаем данные
-            //        const products = await response.json();
-            //        const rows = document.querySelector("tbody");
-            //        // добавляем полученные элементы в таблицу
-            //        products.forEach(product => rows.append(row(product)));
-            //    }
-            //}
-            //// Получение одного пользователя
-            //async function getProduct(id) {
-            //    const response = await fetch(`/Home/Product/${id}`, {
-            //        method: "GET",
-            //        headers: { "Accept": "application/json" }
-            //    });
-            //    if (response.ok === true) {
-            //        const product = await response.json();
-            //        document.getElementById("productId").value = product.Id;
-            //        document.getElementById("productName").value = product.Name;
-            //        document.getElementById("productUrl").value = product.Url;
-            //    }
-            //    else {
-            //        // если произошла ошибка, получаем сообщение об ошибке
-            //        const error = await response.json();
-            //        console.log(error.message); // и выводим его на консоль
-            //    }
-            //}
-            // Добавление пользователя
-            async function createProduct(productName, productUrl) {
-
+            }         
+            // Добавление товара
+        async function createProduct(productName, productUrl) {
+            if ((productName != "") & (productUrl != "")) {
                 const response = await fetch("api/create", {
                     method: "POST",
                     headers: { "Accept": "application/json", "Content-Type": "application/json" },
@@ -284,14 +87,14 @@
                 });
                 if (response.ok === true) {
                     const product = await response.json();
-                    document.querySelector("tbody").append(row(product));
-
+                    document.querySelector("tbody").append(row(product.value));
                 }
                 else {
                     const error = await response.json();
                     console.log(error.message);
                 }
             }
+        }
             // Изменение пользователя
             async function editProduct(productId, productName, productUrl) {
                 const response = await fetch("api/edit", {
@@ -304,9 +107,8 @@
                     })
                 });
                 if (response.ok === true) {
-                    const product = await response.json();
-                    /*document.querySelector(`tr[data-rowid='${product.id}']`).replaceWith(row(product));*/
-                    document.querySelector(`tr[data-rowid='${product.value.id}']`).replaceWith(row(product));
+                    const product = await response.json();                  
+                    document.querySelector(`tr[data-rowid='${product.value.id}']`).replaceWith(row(product.value));
                 }
                 else {
                     const error = await response.json();
@@ -321,68 +123,50 @@
                 });
                 if (response.ok === true) {
                     const product = await response.json();
-
-                    //document.querySelector('tr[data-rowid="' + product.value.id + '"]').remove();
-                    
+                    //document.querySelector('tr[data-rowid="' + product.value.id + '"]').remove();                  
                     document.querySelector(`tr[data-rowid='${product.value.id}']`).remove();
                 }
                 else {
                     const error = await response.json();
                     console.log(error.message);
                 }
-
             }
 
             // сброс данных формы после отправки
             function reset() {
-                document.getElementById("productId").value =
-                    document.getElementById("productName").value =
-                    document.getElementById("productUrl").value = "";
+                document.getElementById("productId").value = "";
+                document.getElementById("productName").value = "";
+                document.getElementById("productUrl").value = "";
             }
             // создание строки для таблицы
         function row(product) {
-
             const tr = document.createElement("tr");
             tr.setAttribute("data-rowid", product.id);
-
             const nameTd = document.createElement("td");
             nameTd.append(product.name);
             tr.append(nameTd);
-
             const urlTd = document.createElement("td");
             urlTd.append(product.url);
             tr.append(urlTd);
-
             const linksTd = document.createElement("td");
-
             const editLink = document.createElement("button");
             editLink.append("Изменить");
             editLink.addEventListener("click", async () => await getProduct(product.id));
             linksTd.append(editLink);
-
             const removeLink = document.createElement("button");
             removeLink.append("Удалить");
             removeLink.addEventListener("click", async () => {
                 await deleteProduct(product.id);
                 document.location.reload();
             });
-                linksTd.append(removeLink);
-                tr.appendChild(linksTd);
-
-                return tr;
-            }
-
-            //function redirect() {
-            //    document.location.href = 'Index.html'
-            //}
-
-
+            linksTd.append(removeLink);
+            tr.appendChild(linksTd);
+            return tr;
+        }
             // сброс значений формы
             document.getElementById("resetBtn").addEventListener("click", () => reset());
-
             // отправка формы
             document.getElementById("saveBtn").addEventListener("click", async () => {
-
                 const id = document.getElementById("productId").value;
                 const name = document.getElementById("productName").value;
                 const url = document.getElementById("productUrl").value;
@@ -392,11 +176,7 @@
                     await editProduct(id, name, url);
                 reset();
                 document.location.reload();
-                //getProducts();
-
-
             });
-
             // загрузка пользователей
             getProducts();
         </script>
